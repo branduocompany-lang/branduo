@@ -1,0 +1,52 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  label: string;
+}
+
+const { title, href, label } = Astro.props;
+---
+
+<section class="section cta" id="contact">
+  <div class="container cta__inner">
+    <div class="cta__glow" data-parallax="-0.3" aria-hidden="true"></div>
+    <h2 class="cta__title" data-split data-split-scroll>{title}</h2>
+    <div data-reveal data-delay="0.2">
+      <Button href={href}>{label}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__inner {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 2.5rem;
+    padding: clamp(3rem, 8vw, 6rem) var(--gutter);
+    border-radius: calc(var(--radius) * 2);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta__glow {
+    position: absolute;
+    inset: 20% 25%;
+    background: var(--c-accent);
+    filter: blur(120px);
+    opacity: 0.25;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .cta__title {
+    position: relative;
+    max-width: 16ch;
+    font-size: var(--fs-xl);
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+import { withBase } from '@/lib/url';
+---
+
+<BaseLayout title="404">
+  <section class="not-found container">
+    <h1 data-split>404</h1>
+    <p class="muted" data-reveal data-delay="0.3">페이지를 찾을 수 없습니다.</p>
+    <div data-reveal data-delay="0.45">
+      <Button href={withBase('/')}>홈으로</Button>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.5rem;
+    min-height: 100svh;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: clamp(6rem, 20vw, 14rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+  }
+</style>

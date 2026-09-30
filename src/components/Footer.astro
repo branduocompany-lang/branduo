@@ -1,0 +1,27 @@
+---
+import { SITE } from '@/lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>© {year} {SITE.name}. All rights reserved.</p>
+    <p class="muted">Built with Astro</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--c-border);
+    padding-block: 2.5rem;
+    font-size: var(--fs-sm);
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+</style>

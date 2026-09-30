@@ -1,0 +1,76 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { SITE } from '@/lib/site';
+import { withBase } from '@/lib/url';
+import 'lenis/dist/lenis.css';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** public/ 기준 경로. 예: '/og.png' (1200x630 권장) */
+  image?: string;
+}
+
+const { title, description = SITE.description, image } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE.name}` : SITE.title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(withBase(image), Astro.site) : undefined;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+
+    <!-- JS 활성 표시: 모션 초기 상태(opacity:0)는 이 클래스가 있을 때만 적용 -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="sr-only" href="#main">본문 바로가기</a>
+    <Header />
+    <main id="main" transition:animate="fade">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import { initMotion } from '@/scripts/motion';
+
+      let cleanup: (() => void) | undefined;
+
+      // ClientRouter 사용 시: 최초 로드 + 페이지 전환마다 발생
+      document.addEventListener('astro:page-load', () => {
+        cleanup = initMotion();
+      });
+
+      // 새 페이지로 DOM 이 교체되기 직전에 정리
+      document.addEventListener('astro:before-swap', () => {
+        cleanup?.();
+        cleanup = undefined;
+      });
+    </script>
+  </body>
+</html>

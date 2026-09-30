@@ -1,0 +1,71 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  magnetic?: boolean;
+}
+
+const { href, variant = 'primary', magnetic = true, class: className, ...rest } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['btn', `btn--${variant}`, className]}
+  data-magnetic={magnetic ? '' : undefined}
+  {...rest}
+>
+  <span class="btn__label"><slot /></span>
+</a>
+
+<style>
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.4s var(--ease-out);
+  }
+
+  /* hover 시 아래에서 차오르는 배경 */
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .btn:hover::before {
+    transform: translateY(0);
+  }
+
+  .btn--primary {
+    background: var(--c-accent);
+    color: var(--c-accent-contrast);
+  }
+  .btn--primary::before {
+    background: var(--c-text);
+  }
+  .btn--primary:hover {
+    color: var(--c-bg);
+  }
+
+  .btn--ghost {
+    border: 1px solid var(--c-border);
+  }
+  .btn--ghost::before {
+    background: var(--c-text);
+  }
+  .btn--ghost:hover {
+    color: var(--c-bg);
+  }
+</style>

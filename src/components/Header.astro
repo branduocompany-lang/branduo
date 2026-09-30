@@ -1,0 +1,197 @@
+---
+import { NAV, SITE } from '@/lib/site';
+import { isActive, withBase } from '@/lib/url';
+
+const current = Astro.url.pathname;
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a class="header__logo" href={withBase('/')} transition:name="logo">
+      <span class="header__mark" aria-hidden="true"></span>
+      {SITE.name}
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-label="메뉴 열기"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-menu-toggle
+    >
+      <span></span><span></span>
+    </button>
+
+    <nav id="site-nav" class="header__nav" aria-label="주요 메뉴">
+      {
+        NAV.map(({ label, href }) => {
+          const url = withBase(href);
+          return (
+            <a
+              href={url}
+              class:list={['header__link', { 'is-active': isActive(current, url) }]}
+              aria-current={isActive(current, url) ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          );
+        })
+      }
+      <a class="header__cta" href={withBase('/#contact')} data-magnetic>시작하기</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    transition:
+      transform 0.5s var(--ease-out),
+      background-color 0.3s,
+      border-color 0.3s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .header:global(.is-scrolled) {
+    background: color-mix(in srgb, var(--c-bg) 80%, transparent);
+    backdrop-filter: blur(12px);
+    border-color: var(--c-border);
+  }
+
+  .header:global(.is-hidden:not(.is-open)) {
+    transform: translateY(-100%);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .header__mark {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: var(--c-accent);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .header__link {
+    position: relative;
+    font-size: var(--fs-sm);
+    color: var(--c-muted);
+    transition: color 0.2s;
+  }
+
+  .header__link::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -4px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .header__link:hover,
+  .header__link.is-active {
+    color: var(--c-text);
+  }
+
+  .header__link:hover::after,
+  .header__link.is-active::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header__cta {
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--c-text);
+    color: var(--c-bg);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  .header__toggle {
+    display: none;
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  .header__toggle span {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .header__toggle span:first-child {
+    top: 15px;
+  }
+  .header__toggle span:last-child {
+    top: 23px;
+  }
+
+  @media (max-width: 768px) {
+    .header__toggle {
+      display: block;
+      z-index: 2;
+    }
+
+    .header__nav {
+      position: fixed;
+      inset: 0;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+      background: var(--c-bg);
+      clip-path: circle(0% at calc(100% - 40px) 36px);
+      transition: clip-path 0.7s var(--ease-out);
+    }
+
+    .header__link {
+      font-size: var(--fs-xl);
+      color: var(--c-text);
+    }
+
+    /* backdrop-filter 가 있으면 fixed 자식(nav)의 기준 박스가 헤더로 바뀌므로 열림 상태에서 제거 */
+    .header:global(.is-open) {
+      backdrop-filter: none;
+    }
+
+    .header:global(.is-open) .header__nav {
+      clip-path: circle(150% at calc(100% - 40px) 36px);
+    }
+
+    .header:global(.is-open) .header__toggle span:first-child {
+      transform: translateY(4px) rotate(45deg);
+    }
+    .header:global(.is-open) .header__toggle span:last-child {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  body: string;
+}
+
+const { index, title, body } = Astro.props;
+---
+
+<article class="card" data-tilt>
+  <span class="card__index">{String(index).padStart(2, '0')}</span>
+  <h3 class="card__title">{title}</h3>
+  <p class="muted">{body}</p>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    padding: 2rem;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  /* 커서를 따라다니는 하이라이트 (tilt.ts 가 --mx/--my 설정) */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      400px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--c-accent) 14%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card__index {
+    display: block;
+    margin-bottom: 2.5rem;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--c-accent);
+  }
+
+  .card__title {
+    margin-bottom: 0.75rem;
+    font-size: var(--fs-lg);
+  }
+</style>
