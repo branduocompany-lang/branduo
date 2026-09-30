@@ -21,8 +21,8 @@ jobs:
       # astro.config.mjs 에서 site / base 계산에 사용
       GITHUB_OWNER: ${{ github.repository_owner }}
       GITHUB_REPO: ${{ github.event.repository.name }}
-      # 커스텀 도메인을 쓰면 주석 해제
-      # SITE_URL: https://example.com
+      # 커스텀 도메인 (설정 시 base 는 '/')
+      SITE_URL: https://brand-duo.co.kr
     steps:
       - name: Checkout
         uses: actions/checkout@v4
