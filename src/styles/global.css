@@ -2,12 +2,13 @@
    Design tokens
    ========================================================================== */
 :root {
-  --c-bg: #fafaf9;
-  --c-surface: #ffffff;
-  --c-text: #111113;
-  --c-muted: #6b6b76;
-  --c-border: #e7e7ea;
-  --c-accent: #5b5bf7;
+  color-scheme: light;
+  --c-bg: #ffffff;
+  --c-surface: #f4f4f6;
+  --c-text: #141416;
+  --c-muted: #6b6b74;
+  --c-border: #e6e6ea;
+  --c-accent: #1e5bff;
   --c-accent-contrast: #ffffff;
 
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
@@ -16,27 +17,16 @@
   --fs-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
   --fs-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
   --fs-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --fs-xl: clamp(2rem, 1.5rem + 2vw, 3rem);
-  --fs-display: clamp(2.75rem, 1.5rem + 5.5vw, 6.5rem);
+  --fs-xl: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  --fs-display: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
 
   --space-section: clamp(5rem, 3rem + 8vw, 10rem);
   --gutter: clamp(1rem, 0.5rem + 2vw, 2rem);
-  --container: 1200px;
+  --container: 1500px;
   --radius: 16px;
   --header-h: 72px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --c-bg: #0c0c0f;
-    --c-surface: #16161b;
-    --c-text: #f3f3f5;
-    --c-muted: #9a9aa6;
-    --c-border: #26262e;
-    --c-accent: #7b7bff;
-  }
 }
 
 /* ==========================================================================
@@ -116,10 +106,8 @@ h3 {
 
 .eyebrow {
   display: inline-block;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: var(--fs-lg);
+  font-weight: 700;
   color: var(--c-accent);
 }
 

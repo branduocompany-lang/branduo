@@ -1,238 +1,1348 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Button from '@/components/Button.astro';
-import FeatureCard from '@/components/FeatureCard.astro';
-import Marquee from '@/components/Marquee.astro';
-import CTA from '@/components/CTA.astro';
 import { withBase } from '@/lib/url';
 
-const features = [
-  { title: '기능 하나', body: '핵심 가치를 한두 문장으로 설명하는 자리입니다.' },
-  { title: '기능 둘', body: '사용자가 얻는 구체적인 이점을 적어주세요.' },
-  { title: '기능 셋', body: '차별점이나 신뢰를 주는 요소를 소개합니다.' },
+const groups = [
+  {
+    no: '01',
+    title: '검색 노출',
+    summary: '환자가 검색하는 순간, 우리가 먼저 보이게',
+    items: ['플레이스 상위노출', '카페 상위노출', '블로그 상위노출', '함께 많이 찾는 영역 노출'],
+  },
+  {
+    no: '02',
+    title: '콘텐츠 · 바이럴',
+    summary: '신뢰를 쌓는 콘텐츠를 꾸준히 확산',
+    items: ['브랜드블로그', '최적화 블로그 배포', '구글 블로그 (AI 최적화)', '인플루언서 블로그 배포', '카페 바이럴'],
+  },
+  {
+    no: '03',
+    title: '심의 · 오프라인',
+    summary: '안전한 광고 집행과 오프라인 인지도',
+    items: ['의료광고 심의대행', { name: '오프라인 광고', note: '엘리베이터, 현수막, 지하철 등 오프라인 광고' }],
+  },
 ];
 
-const stats = [
-  { value: 1200, suffix: '+', label: '누적 사용자' },
-  { value: 98, suffix: '%', label: '만족도' },
-  { value: 4.9, decimals: 1, label: '평균 평점' },
+const steps = [
+  {
+    title: '문의',
+    desc: '전화, 채팅, 이메일 등 편한 방법으로 문의해 주세요.',
+    icon: '<path d="M4 5h16v11H10l-5 4v-4H4z"/>',
+  },
+  {
+    title: '온라인 or 오프라인 미팅',
+    desc: '브랜드와 목표를 듣고 필요한 방향을 함께 정리합니다.',
+    icon: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
+  },
+  {
+    title: '전담 채팅방 개설',
+    desc: '담당자와 바로 소통할 수 있는 전용 채팅방을 열어드립니다.',
+    icon: '<path d="M4 4h12v8H9l-3 3v-3H4z"/><path d="M19 9v8l-3-2H9"/>',
+  },
+  {
+    title: '계약서 작성',
+    desc: '진행 범위와 조건을 문서로 명확하게 확정합니다.',
+    icon: '<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 13h6M10 17h6"/>',
+  },
+  {
+    title: '서비스 진행',
+    desc: '확정된 플랜에 따라 전담 팀이 운영을 시작합니다.\n대표가 직접 소통을 진행합니다.',
+    icon: '<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  },
+  {
+    title: '보고서 전달',
+    desc: '진행 상황과 성과를 정기적으로 투명하게 공유합니다.',
+    chips: ['주간 보고서', '월말 보고서'],
+    icon: '<path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/>',
+  },
 ];
 
-const partners = ['Partner A', 'Partner B', 'Partner C', 'Partner D', 'Partner E', 'Partner F'];
+// 성과 이미지: public/images/cases/<file>-1.png ~ <file>-<count>.png
+const cases = [
+  { title: '네이버 콘텐츠', file: 'blog', note: '검색 상위노출 성과', count: 5, wide: true },
+  { title: 'AI 최적화', file: 'ai', note: 'AI 검색 답변 노출 성과', count: 4, tall: true },
+  { title: '차별화된 고객후기', file: 'kakao', note: '고객이 남긴 실제 후기', count: 6, auto: true, feature: true },
+];
+
+const news = [
+  {
+    title: "브랜듀오, 의료법 민원신고 '완벽대응 시스템' 구축",
+    hue: 215,
+    image: '/images/news-1.png',
+    url: 'https://www.beyondpost.co.kr/view.php?ud=2026030617243243476cf2d78c68_30',
+  },
+  {
+    title: '브랜듀오가 블로그만으로 월 신환 100명을 찍는 이유',
+    hue: 245,
+    image: '/images/news-2.png',
+    url: 'https://blog.naver.com/ten_agency/223451289316',
+  },
+  {
+    title: '병원브랜딩 3단계 공식\n경쟁하지 않고 이기는법',
+    hue: 275,
+    image: '/images/news-3.png',
+    url: 'https://blog.naver.com/ten_agency/223454262120',
+  },
+];
+
+const dots = ['top', 'message', 'services', 'process', 'cases', 'news'];
 ---
 
 <BaseLayout>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero__bg" data-parallax="0.4" aria-hidden="true">
-      <span class="hero__blob hero__blob--a"></span>
-      <span class="hero__blob hero__blob--b"></span>
-    </div>
-
+  <!-- 1. Hero -->
+  <section class="hero" id="top" data-section>
+    <div class="hero__glow" data-parallax="0.3" aria-hidden="true"></div>
     <div class="container hero__inner">
-      <span class="eyebrow" data-reveal data-delay="0.05">Landing boilerplate</span>
-      <h1 class="hero__title" data-split>안녕하세요</h1>
-      <p class="hero__lead muted" data-reveal data-delay="0.4">
-        서브 카피가 들어갈 자리입니다. 서비스가 무엇이고 누구를 위한 것인지 짧게 설명하세요.
-      </p>
-      <div class="hero__actions" data-reveal data-delay="0.55">
-        <Button href="#features">자세히 보기</Button>
-        <Button href={withBase('/about')} variant="ghost">About</Button>
+      <h1 class="hero__title" data-split>
+        <span>Your</span> <b>Brand</b> <span>Deserves a</span> <b>Duo</b>
+      </h1>
+      <p class="hero__lead" data-reveal data-delay="0.5">당신의 브랜드에 최고의 파트너를</p>
+    </div>
+    <a class="hero__scroll" href="#services" aria-label="아래로 스크롤">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        ><path d="M6 6l6 6 6-6M6 12l6 6 6-6"></path></svg
+      >
+    </a>
+  </section>
+
+  <!-- 1-2. CEO message (라이트 섹션) -->
+  <section class="ceo" id="message" data-section>
+    <div class="container ceo__inner">
+      <div class="ceo__text">
+        <span class="ceo__label" data-reveal>대표 인사말</span>
+        <h2 class="ceo__title" data-reveal>
+          100개 가까운 업체를 만나며,<br /><em>저는 한 가지를 느꼈습니다.</em>
+        </h2>
+        <p class="ceo__strong" data-reveal data-delay="0.1">
+          직장생활을 하며 100개 가까이 되는 업체를 만나봤습니다.<br />하지만 실력이 좋다고 고객에게 오만한 태도를 취하고,<br />태도는 좋지만 실력이 부족한 회사를 너무 많이 봤습니다.
+        </p>
+        <div class="ceo__body" data-reveal data-delay="0.2">
+          <p>그래서 생각했습니다.<br />실력과 태도,<br />왜 둘 다 갖춘 회사는 모래속의 진주처럼 찾기 어려울까?</p>
+          <p class="ceo__em">그 질문에서 브랜듀오가 시작됐습니다.</p>
+          <p>저희는 좋은 결과를 만드는 것만큼<br />좋은 과정으로 함께하는 것을 중요하게 생각합니다.</p>
+          <p>저희는 ‘대행사’가 되고 싶지 않습니다.</p>
+          <p>고객의 마케팅을 대행하는 회사가 아니라,<br />고객의 브랜드를 함께 키우는 회사.</p>
+          <p>이런 마음가짐을 브랜듀오라는 이름에 담았습니다.</p>
+        </div>
+        <p class="ceo__sign" data-reveal data-delay="0.3">대표 <span>안형원</span></p>
+      </div>
+
+      <div class="ceo__photo" data-reveal="scale" >
+        <img class="ceo__img" src={withBase('/images/ceo.png')} alt="" width="534" height="848" loading="lazy" />
       </div>
     </div>
-
-    <div class="hero__scroll" aria-hidden="true"><span></span></div>
   </section>
 
-  <!-- Partners -->
-  <section class="partners" data-reveal="fade">
-    <Marquee items={partners} />
-  </section>
-
-  <!-- Features -->
-  <section class="section" id="features">
+  <!-- 2. Products -->
+  <section class="section services" id="services" data-section>
     <div class="container">
-      <header class="section-head">
-        <span class="eyebrow" data-reveal>Features</span>
-        <h2 data-split data-split-scroll>섹션 제목을 입력하세요</h2>
+      <header class="services__head">
+        <p class="eyebrow" data-reveal>our service</p>
+        <h2 class="headline" data-reveal data-delay="0.1">
+          광고만 해주는 마케팅,<br /><em>저희는 하지 않습니다.</em>
+        </h2>
+        <p class="services__lead" data-reveal data-delay="0.2">
+          브랜드를 이해하고<br />성과를 만들기 위한 마케팅을 설계합니다.
+        </p>
       </header>
 
-      <div class="grid" data-stagger="0.12">
-        {features.map((f, i) => <FeatureCard index={i + 1} {...f} />)}
+      <div class="groups" data-stagger="0.12">
+        {
+          groups.map((g) => (
+            <article class="group">
+              <span class="group__no">{g.no}</span>
+              <h3>{g.title}</h3>
+              <p class="group__sum">{g.summary}</p>
+              <ul>
+                {g.items.map((i) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <path d="M5 12.5l4.5 4.5L19 7.5" />
+                    </svg>
+                    <span class="group__item">
+                      {typeof i === 'string' ? i : i.name}
+                      {typeof i !== 'string' && <small>{i.note}</small>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <a class="group__link" href="#contact">
+                문의하기
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <!-- Stats -->
-  <section class="section stats">
-    <div class="container stats__grid" data-stagger>
-      {
-        stats.map((s) => (
-          <div class="stat">
-            <strong
-              class="stat__value"
-              data-count={s.value}
-              data-suffix={s.suffix}
-              data-decimals={s.decimals}
-            >
-              {s.value}
-              {s.suffix}
-            </strong>
-            <span class="muted">{s.label}</span>
-          </div>
-        ))
-      }
+  <!-- 3. Process -->
+  <section class="section process" id="process" data-section>
+    <div class="container">
+      <header class="process__head">
+        <p class="eyebrow" data-reveal>process</p>
+        <h2 class="headline" data-reveal data-delay="0.1">
+          미팅부터 서비스 진행까지,<br /><em>저희가 끝까지 책임집니다.</em>
+        </h2>
+        <p class="process__lead" data-reveal data-delay="0.2">
+          계약은 시작이 아니라, 진짜 책임의 시작이라고 생각합니다.
+        </p>
+      </header>
+
+      <ol class="pflow" data-stagger="0.1">
+        {
+          steps.map((s, i) => (
+            <li class:list={['pstep', { 'is-last': i === steps.length - 1 }]}>
+              <span class="pstep__no">{String(i + 1).padStart(2, '0')}</span>
+              <span class="pstep__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" set:html={s.icon} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+              {s.chips && (
+                <span class="pstep__chips">
+                  {s.chips.map((c) => (
+                    <em>{c}</em>
+                  ))}
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
-  <CTA title="마지막 행동 유도 문구를 적어주세요" href="mailto:hello@example.com" label="문의하기" />
+  <!-- 4-2. Cases -->
+  <section class="section cases" id="cases" data-section>
+    <div class="container">
+      <header class="cases__head">
+        <p class="eyebrow" data-reveal>case study</p>
+        <h2 class="headline" data-reveal data-delay="0.1">
+          말로만 하지 않습니다.<br /><em>결과로 보여드립니다.</em>
+        </h2>
+      </header>
+
+      <div class="cases__grid">
+        {
+          cases.map((c, i) => (
+            <article class:list={['ccard', { 'ccard--feature': c.feature }]} data-reveal data-delay={(i % 2) * 0.1}>
+              <header class="ccard__head">
+                <span class="ccard__no">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{c.title}</h3>
+                <span class="ccard__note">{c.note}</span>
+              </header>
+
+              <div class="ccard__window" style={`--n:${c.count}`}>
+                <div class="ccard__track">
+                  {[0, 1].map((dup) => (
+                    <div class="ccard__set" aria-hidden={dup ? 'true' : undefined}>
+                      {Array.from({ length: c.count }, (_, n) => (
+                        <div class:list={['cslide', { 'cslide--tall': c.tall, 'cslide--wide': c.wide, 'cslide--auto': c.auto }]}>
+                          <span class="cslide__ph">이미지 {n + 1}</span>
+                          <img
+                            src={withBase(`/images/cases/${c.file}-${n + 1}.png`)}
+                            alt={dup ? '' : `${c.title} 성과 사례 ${n + 1}`}
+                            loading={c.auto ? 'eager' : 'lazy'}
+                            onload="this.style.opacity=1"
+                            onerror="this.remove()"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. News -->
+  <section class="news" id="news" data-section>
+    <div class="container">
+      <header class="news__head">
+        <p class="eyebrow" data-reveal>news</p>
+        <h2 class="headline" data-reveal data-delay="0.1">브랜듀오의 소식을<br /><em>확인하세요.</em></h2>
+      </header>
+
+      <div class="ngrid" data-stagger="0.1">
+        {
+          news.map((n, i) => (
+            <a
+              class="ncard"
+              href={n.url ?? '#'}
+              target={n.url ? '_blank' : undefined}
+              rel={n.url ? 'noopener noreferrer' : undefined}
+              style={`--h:${n.hue}`}
+            >
+              <span
+                class:list={['ncard__thumb', { 'has-img': n.image }]}
+                style={n.image ? `--img:url(${withBase(n.image)})` : undefined}
+              >
+                <span class="ncard__no">{String(i + 1).padStart(2, '0')}</span>
+              </span>
+              <span class="ncard__body">
+                <strong>{n.title}</strong>
+                <span class="ncard__meta">
+                  <em>자세히</em>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 성과 이미지 크게 보기 -->
+  <div class="lb" data-lightbox hidden role="dialog" aria-modal="true" aria-label="이미지 크게 보기">
+    <button type="button" class="lb__btn lb__close" aria-label="닫기" data-lb-close>×</button>
+    <button type="button" class="lb__btn lb__nav lb__nav--prev" aria-label="이전" data-lb-prev>‹</button>
+    <img class="lb__img" alt="" data-lb-img />
+    <button type="button" class="lb__btn lb__nav lb__nav--next" aria-label="다음" data-lb-next>›</button>
+    <span class="lb__count" data-lb-count></span>
+  </div>
+
+  <!-- 우측 고정 UI -->
+  <nav class="dots" aria-label="섹션 이동">
+    {dots.map((d, i) => <a href={`#${d}`} class:list={[{ 'is-on': i === 0 }]} data-dot={d} aria-label={d}></a>)}
+  </nav>
+
+  <div class="float">
+    <a
+      class="float__btn"
+      href="http://pf.kakao.com/_ZTLEX/chat"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="카카오톡 상담"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        ><path d="M12 4C7.6 4 4 6.9 4 10.5c0 2.3 1.5 4.3 3.7 5.5L7 19.5l3.6-2.3c.5.1 1 .1 1.4.1 4.4 0 8-2.9 8-6.5S16.4 4 12 4z"
+        ></path></svg
+      >
+    </a>
+    <a class="float__btn" href="tel:050713083454" aria-label="전화 상담">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        ><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"></path></svg
+      >
+    </a>
+    <a class="float__btn float__btn--top" href="#top" aria-label="맨 위로">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+        ><path d="M12 19V5M5 12l7-7 7 7"></path></svg
+      >
+    </a>
+  </div>
 </BaseLayout>
 
+<script>
+  function init() {
+    // 섹션 dots
+    const dots = document.querySelectorAll<HTMLElement>('[data-dot]');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          dots.forEach((d) => d.classList.toggle('is-on', d.dataset.dot === e.target.id));
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px' },
+    );
+    document.querySelectorAll('[data-section]').forEach((s) => io.observe(s));
+
+    // 성과 이미지 크게 보기 (클릭)
+    const lb = document.querySelector<HTMLElement>('[data-lightbox]');
+    const lbImg = lb?.querySelector<HTMLImageElement>('[data-lb-img]');
+    const lbCount = lb?.querySelector<HTMLElement>('[data-lb-count]');
+    let list: HTMLImageElement[] = [];
+    let idx = 0;
+    const show = (i: number) => {
+      if (!lb || !lbImg || !list.length) return;
+      idx = (i + list.length) % list.length;
+      lbImg.src = list[idx].currentSrc || list[idx].src;
+      lbImg.alt = list[idx].alt;
+      if (lbCount) lbCount.textContent = `${idx + 1} / ${list.length}`;
+    };
+    const openLb = (i: number) => {
+      if (!lb) return;
+      lb.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      show(i);
+    };
+    const closeLb = () => {
+      if (!lb) return;
+      lb.hidden = true;
+      document.documentElement.style.overflow = '';
+    };
+    const cardClicks: Array<[Element, (e: Event) => void]> = [];
+    document.querySelectorAll('.ccard').forEach((card) => {
+      const onClick = (e: Event) => {
+        const im = (e.target as Element).closest('.cslide img');
+        if (!im) return;
+        list = [...card.querySelectorAll<HTMLImageElement>('.ccard__set:first-child .cslide img')];
+        const i = list.findIndex((x) => x.getAttribute('src') === im.getAttribute('src'));
+        openLb(Math.max(i, 0));
+      };
+      card.addEventListener('click', onClick);
+      cardClicks.push([card, onClick]);
+    });
+    lb?.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      if (t.closest('[data-lb-prev]')) show(idx - 1);
+      else if (t.closest('[data-lb-next]')) show(idx + 1);
+      else if (!t.closest('[data-lb-img]')) closeLb();
+    });
+    const onKey = (e: KeyboardEvent) => {
+      if (!lb || lb.hidden) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    };
+    document.addEventListener('keydown', onKey);
+
+    return () => {
+      io.disconnect();
+      closeLb();
+      document.removeEventListener('keydown', onKey);
+      cardClicks.forEach(([el, fn]) => el.removeEventListener('click', fn));
+    };
+  }
+
+  let cleanup: (() => void) | undefined;
+  document.addEventListener('astro:page-load', () => {
+    if (document.querySelector('[data-dot]')) cleanup = init();
+  });
+  document.addEventListener('astro:before-swap', () => cleanup?.());
+</script>
+
 <style>
+  section[id] {
+    scroll-margin-top: 0;
+  }
+
+  .headline {
+    margin-top: 1.5rem;
+    font-size: var(--fs-xl);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+    text-wrap: initial;
+  }
+  .headline--md {
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.6rem);
+  }
+  .headline--sm {
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.4rem);
+  }
+  .headline em {
+    font-style: normal;
+    color: var(--c-accent);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 1rem 2.2rem;
+    border-radius: 999px;
+    background: var(--c-accent);
+    color: #fff;
+    font-weight: 700;
+    transition:
+      transform 0.4s var(--ease-out),
+      filter 0.3s;
+  }
+  .pill:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.15);
+  }
+  .pill svg {
+    width: 20px;
+    height: 20px;
+  }
+
   /* ---------- Hero ---------- */
   .hero {
     position: relative;
     display: grid;
-    align-items: center;
+    place-items: center;
     min-height: 100svh;
-    padding-top: var(--header-h);
     overflow: hidden;
+    text-align: center;
   }
-
-  .hero__bg {
+  .hero__glow {
     position: absolute;
-    inset: -10% 0;
+    top: 50%;
+    left: 50%;
+    width: min(60vw, 720px);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(circle, rgba(30, 91, 255, 0.35), transparent 65%);
+    filter: blur(40px);
     pointer-events: none;
   }
-
-  .hero__blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.45;
-    animation: float 14s ease-in-out infinite alternate;
-  }
-
-  .hero__blob--a {
-    width: 40vw;
-    height: 40vw;
-    top: 10%;
-    right: -5%;
-    background: var(--c-accent);
-  }
-
-  .hero__blob--b {
-    width: 30vw;
-    height: 30vw;
-    bottom: 5%;
-    left: -5%;
-    background: #ff7ab6;
-    animation-delay: -7s;
-  }
-
-  @keyframes float {
-    to {
-      transform: translate3d(-6vw, 4vw, 0) scale(1.15);
-    }
-  }
-
   .hero__inner {
     position: relative;
     display: grid;
     gap: 1.5rem;
+    justify-items: center;
   }
-
   .hero__title {
-    max-width: 14ch;
     font-size: var(--fs-display);
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-wrap: initial;
   }
-
+  .hero__title b {
+    font-weight: 700;
+    color: var(--c-accent);
+  }
+  .hero__title span {
+    font-weight: 300;
+  }
   .hero__lead {
-    max-width: 52ch;
     font-size: var(--fs-lg);
+    font-weight: 500;
   }
-
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
-
   .hero__scroll {
     position: absolute;
-    left: 50%;
     bottom: 2rem;
-    width: 1px;
-    height: 56px;
-    background: var(--c-border);
+    left: 50%;
+    width: 28px;
+    translate: -50% 0;
+    animation: bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(8px);
+    }
+  }
+
+  /* ---------- Products ---------- */
+  .services {
+    background: linear-gradient(to bottom, #fff 0%, #f1f5ff 100%);
+    padding-top: calc(var(--header-h) + 3rem);
+  }
+  .services__head {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .services__lead {
+    margin-top: 0.75rem;
+    color: var(--c-muted);
+  }
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .group {
+    display: flex;
+    flex-direction: column;
+    padding: 2.25rem 2rem 1.75rem;
+    border: 1px solid #e3e9f7;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 20px 40px -28px rgba(30, 60, 140, 0.35);
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  .group:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 50px -26px rgba(30, 91, 255, 0.4);
+  }
+  .group__no {
+    color: var(--c-accent);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  .group h3 {
+    margin-top: 0.5rem;
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .group__sum {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    font-size: var(--fs-sm);
+  }
+  .group ul {
+    display: grid;
+    gap: 0.9rem;
+    margin: 1.75rem 0 2rem;
+    padding: 1.5rem 0 0;
+    border-top: 1px solid var(--c-border);
+    list-style: none;
+  }
+  .group li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: var(--fs-base);
+    font-weight: 600;
+  }
+  .group__item {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .group__item small {
+    color: var(--c-muted);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    line-height: 1.55;
+  }
+  .group li svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15rem;
+    padding: 3px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: #fff;
+  }
+  .group__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+    color: var(--c-accent);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+  }
+  .group__link svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .group__link:hover svg {
+    transform: translateX(5px);
+  }
+
+  /* ---------- CEO message ---------- */
+  .ceo {
+    position: relative;
+    padding-block: calc(var(--space-section) * 0.8) 0;
+    background: #f5f5f7;
+    color: #3a3a3f;
     overflow: hidden;
   }
+  .ceo__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 1rem;
+    padding-inline: clamp(0rem, 3vw, 3rem);
+  }
+  .ceo__text {
+    margin-bottom: 1.5rem;
+    padding: clamp(1.75rem, 3vw, 3rem) clamp(1.5rem, 3.25vw, 3.25rem);
+    max-width: 680px;
+    border: 1px solid #ececf0;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 30px 60px -30px rgba(30, 50, 120, 0.25);
+  }
+  .ceo__label {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--c-accent) 10%, #fff);
+    color: var(--c-accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .ceo__title {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.04em;
+    color: #111114;
+  }
+  .ceo__title em {
+    font-style: normal;
+    color: var(--c-accent);
+  }
+  .ceo__strong {
+    margin-top: 1.75rem;
+    padding-left: 1.25rem;
+    border-left: 4px solid var(--c-accent);
+    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+    font-weight: 700;
+    line-height: 1.8;
+    letter-spacing: -0.02em;
+    color: #1a1a1e;
+  }
+  .ceo__body {
+    display: grid;
+    gap: 1.05rem;
+    margin-top: 1.75rem;
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
+    line-height: 1.85;
+    color: #2f2f36;
+  }
+  .ceo__em {
+    font-size: 1.15em;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--c-accent);
+  }
+  .ceo__sign {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #ececf0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--c-muted);
+  }
+  .ceo__sign span {
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Nanum Pen Script', cursive;
+    color: #111;
+  }
+  .ceo__photo {
+    position: relative;
+    justify-self: end;
+    width: min(36vw, 500px);
+    margin-right: clamp(-6rem, -5vw, 0rem);
+  }
+  .ceo__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.18));
+  }
 
-  .hero__scroll span {
+  @media (max-width: 900px) {
+    .ceo__inner {
+      grid-template-columns: 1fr;
+    }
+    .ceo__text {
+      margin-bottom: 0;
+    }
+    .ceo__photo {
+      justify-self: center;
+      width: min(90%, 420px);
+      margin-right: 0;
+    }
+  }
+
+  /* ---------- Process ---------- */
+  .process {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--header-h) + 3rem);
+    background:
+      radial-gradient(60vw 40vw at 10% 0%, rgba(30, 91, 255, 0.1), transparent 60%),
+      radial-gradient(50vw 40vw at 100% 100%, rgba(100, 60, 255, 0.1), transparent 60%),
+      #fff;
+  }
+  .process__head {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .process__lead {
+    margin-top: 0.75rem;
+    color: var(--c-muted);
+  }
+  .pflow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding: 0;
+    list-style: none;
+  }
+  .pstep {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    padding: 2.25rem 2rem 2rem;
+    border: 1px solid rgba(30, 91, 255, 0.12);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 #fff inset, 0 24px 48px -32px rgba(30, 60, 160, 0.4);
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out),
+      background-color 0.4s;
+  }
+  .pstep::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    border-radius: 28px 28px 0 0;
+    background: linear-gradient(90deg, #1e5bff, #7a4dff);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .pstep:hover {
+    transform: translateY(-8px);
+    background: #fff;
+    box-shadow: 0 40px 60px -30px rgba(30, 91, 255, 0.55);
+  }
+  .pstep:hover::before {
+    transform: scaleX(1);
+  }
+  /* 카드 사이 연결 화살표 */
+  .pstep:not(:nth-child(3n))::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -1.15rem;
+    z-index: 1;
+    width: 0.8rem;
+    height: 0.8rem;
+    translate: 0 -50%;
+    border-top: 3px solid var(--c-accent);
+    border-right: 3px solid var(--c-accent);
+    rotate: 45deg;
+    filter: drop-shadow(0 4px 6px rgba(30, 91, 255, 0.35));
+  }
+  .pstep__no {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    background: linear-gradient(180deg, #c9d8ff, rgba(201, 216, 255, 0));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .pstep__icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #3d78ff, #2a3cff);
+    color: #fff;
+    box-shadow: 0 16px 28px -12px rgba(30, 60, 255, 0.7);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .pstep:hover .pstep__icon {
+    transform: rotate(-8deg) scale(1.08);
+  }
+  .pstep__icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  .pstep h3 {
+    margin-top: 1.75rem;
+    font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.65rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.3;
+  }
+  .pstep p {
+    margin-top: 0.75rem;
+    color: var(--c-muted);
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.12rem);
+    line-height: 1.7;
+    white-space: pre-line;
+  }
+  .pstep__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+  }
+  .pstep__chips em {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #d5e0fb;
+    color: var(--c-accent);
+    font-size: 0.8rem;
+    font-style: normal;
+    font-weight: 700;
+  }
+  /* 마지막 단계 강조 */
+  .pstep.is-last {
+    border-color: transparent;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(255, 255, 255, 0.28), transparent 55%),
+      linear-gradient(135deg, #1e5bff, #4a2cff);
+    color: #fff;
+    box-shadow: 0 40px 70px -30px rgba(50, 60, 255, 0.8);
+  }
+  .pstep.is-last:hover {
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(255, 255, 255, 0.28), transparent 55%),
+      linear-gradient(135deg, #1e5bff, #4a2cff);
+  }
+  .pstep.is-last::before {
+    background: #fff;
+  }
+  .pstep.is-last p {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .pstep.is-last .pstep__no {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .pstep.is-last .pstep__icon {
+    background: #fff;
+    color: var(--c-accent);
+    box-shadow: 0 16px 28px -12px rgba(0, 0, 60, 0.5);
+  }
+  .pstep.is-last .pstep__chips em {
+    border-color: transparent;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .pflow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .pstep::after {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .pflow {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  /* ---------- Cases ---------- */
+  .cases {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100svh;
+    padding-block: calc(var(--header-h) + 0.5rem) 1.5rem;
+    background: linear-gradient(#fff, #f5f8ff);
+  }
+  .cases .headline {
+    margin-top: 0.5rem;
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);
+  }
+  .cases__head {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .cases__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .ccard {
+    padding: 1.15rem 0 1.15rem 1.5rem;
+    border: 1px solid #e3e9f7;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 24px 48px -34px rgba(30, 60, 160, 0.4);
+    overflow: hidden;
+  }
+  /* 고객 후기: 아래 줄 전체 너비로 늘려서 */
+  .ccard--feature {
+    grid-column: 1 / -1;
+  }
+  .ccard--feature .cslide--auto {
+    height: clamp(320px, 52svh, 520px);
+  }
+  .ccard__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding-right: 1.5rem;
+    margin-bottom: 0.85rem;
+  }
+  .ccard__no {
+    color: var(--c-accent);
+    font-size: var(--fs-sm);
+    font-weight: 800;
+  }
+  .ccard h3 {
+    font-size: var(--fs-lg);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .ccard__note {
+    margin-left: auto;
+    color: var(--c-muted);
+    font-size: 0.8rem;
+  }
+  /* 물 흐르듯 끊김 없이 이어지는 가로 흐름 */
+  .ccard__window {
+    container-type: inline-size;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+  .ccard__track {
+    display: flex;
+    width: max-content;
+    animation: caseflow calc(var(--n) * 9s) linear infinite;
+  }
+  .ccard:hover .ccard__track {
+    animation-play-state: paused;
+  }
+  .ccard__set {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+  @keyframes caseflow {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .cslide {
+    position: relative;
+    flex: none;
+    /* 창 너비 기준으로 한 번에 3장이 보이도록 */
+    width: calc((100cqw - 2rem) / 3);
+    aspect-ratio: 1 / 1;
+    border: 1px solid #e3e9f7;
+    border-radius: 18px;
+    background: #fff;
+    overflow: hidden;
+  }
+  /* 세로로 긴 스크린샷: 잘리지 않게 높이 기준으로 전체 표시 */
+  .cslide--tall {
+    width: auto;
+    height: calc((100cqw - 2rem) / 3);
+    aspect-ratio: 4 / 5;
+  }
+  /* 비율이 제각각인 이미지: 높이를 맞추고 너비는 이미지 비율대로 */
+  .cslide--auto {
+    width: auto;
+    min-width: 120px;
+    height: calc((100cqw - 2rem) / 3);
+    aspect-ratio: auto;
+  }
+  .cslide.cslide--auto img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+  }
+  /* 가로로 긴 그래프 이미지 */
+  .cslide--wide {
+    width: auto;
+    height: calc((100cqw - 2rem) / 3);
+    aspect-ratio: 1.39 / 1;
+  }
+  .cslide--tall img,
+  .cslide--wide img {
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+  }
+  .cslide img {
+    cursor: zoom-in;
+  }
+  .cslide__ph {
     position: absolute;
     inset: 0;
-    background: var(--c-text);
-    animation: scroll-hint 2s var(--ease-out) infinite;
+    display: grid;
+    place-items: center;
+    background: repeating-linear-gradient(135deg, #f4f7ff 0 14px, #eef3ff 14px 28px);
+    color: #9db0e6;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  .cslide img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0;
+    transition: opacity 0.4s;
   }
 
-  @keyframes scroll-hint {
-    from {
-      transform: translateY(-100%);
+  @media (prefers-reduced-motion: reduce) {
+    .ccard__window {
+      overflow-x: auto;
     }
-    to {
-      transform: translateY(100%);
+    .ccard__track {
+      animation: none;
+    }
+    .ccard__set[aria-hidden='true'] {
+      display: none;
+    }
+  }
+  @media (max-width: 900px) {
+    .cases__grid {
+      grid-template-columns: 1fr;
     }
   }
 
-  /* ---------- Partners ---------- */
-  .partners {
-    padding-block: 2.5rem;
-    border-block: 1px solid var(--c-border);
+  /* ---------- Lightbox ---------- */
+  .lb {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    place-items: center;
+    background: rgba(8, 12, 30, 0.9);
+    backdrop-filter: blur(6px);
+  }
+  .lb[hidden] {
+    display: none;
+  }
+  .lb__img {
+    max-width: min(92vw, 1100px);
+    max-height: 88vh;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    object-fit: contain;
+  }
+  .lb__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 1.8rem;
+    line-height: 1;
+    transition: background-color 0.3s;
+  }
+  .lb__btn:hover {
+    background: var(--c-accent);
+  }
+  .lb__close {
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+  .lb__nav {
+    top: 50%;
+    translate: 0 -50%;
+  }
+  .lb__nav--prev {
+    left: 1.25rem;
+  }
+  .lb__nav--next {
+    right: 1.25rem;
+  }
+  .lb__count {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    translate: -50% 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: var(--fs-sm);
+    font-weight: 600;
   }
 
-  /* ---------- Features ---------- */
-  .section-head {
+  /* ---------- News ---------- */
+  .news {
+    display: grid;
+    align-items: center;
+    min-height: 100svh;
+    padding-block: calc(var(--header-h) + 2rem) 3rem;
+    background: linear-gradient(#f5f8ff, #fff);
+  }
+  .news__head {
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  .ngrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .ncard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e3e9f7;
+    border-radius: 28px;
+    background: #fff;
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  .ncard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 36px 56px -32px rgba(30, 91, 255, 0.5);
+  }
+  .ncard__thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    background:
+      radial-gradient(90% 90% at 100% 0%, rgba(255, 255, 255, 0.35), transparent 60%),
+      linear-gradient(135deg, hsl(var(--h) 85% 58%), hsl(calc(var(--h) + 30) 80% 42%));
+  }
+  .ncard__thumb.has-img {
+    background:
+      linear-gradient(to top, rgba(0, 10, 50, 0.45), transparent 55%),
+      var(--img) center / cover no-repeat;
+  }
+  .ncard__no {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 1;
+  }
+  .ncard__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.5rem 1.6rem 1.5rem;
+  }
+  .ncard__body strong {
+    font-size: var(--fs-lg);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+    word-break: keep-all;
+    white-space: pre-line;
+  }
+  .ncard__meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    color: var(--c-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  .ncard__meta em {
+    font-style: normal;
+  }
+  .ncard__meta svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .ncard:hover .ncard__meta {
+    color: var(--c-accent);
+  }
+  .ncard:hover .ncard__meta svg {
+    transform: translateX(6px);
+  }
+
+  @media (max-width: 900px) {
+    .ngrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- 우측 고정 UI ---------- */
+  .dots {
+    position: fixed;
+    top: 50%;
+    right: 1.5rem;
+    z-index: 40;
     display: grid;
     gap: 1rem;
-    margin-bottom: 3.5rem;
+    translate: 0 -50%;
   }
-
-  .section-head h2 {
-    max-width: 18ch;
-    font-size: var(--fs-xl);
+  .dots a {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c9c9cf;
+    transition:
+      background 0.3s,
+      transform 0.3s;
   }
-
-  .grid {
+  .dots a.is-on {
+    background: var(--c-accent);
+    transform: scale(2.6);
+  }
+  .float {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 40;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 1.25rem;
+    gap: 0.9rem;
   }
-
-  /* ---------- Stats ---------- */
-  .stats {
-    padding-top: 0;
-  }
-
-  .stats__grid {
+  .float__btn {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
-    gap: 2rem;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: #fff;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .float__btn:hover {
+    transform: scale(1.08);
+  }
+  .float__btn--top {
+    background: #fff;
+    border: 1px solid var(--c-text);
+    color: var(--c-text);
+  }
+  .float__btn svg {
+    width: 26px;
+    height: 26px;
   }
 
-  .stat {
-    display: grid;
-    gap: 0.25rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--c-border);
-  }
-
-  .stat__value {
-    font-size: var(--fs-xl);
-    font-weight: 800;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.03em;
+  @media (max-width: 900px) {
+    .dots {
+      display: none;
+    }
+    .float {
+      right: 0.75rem;
+      bottom: 0.75rem;
+    }
+    .float__btn {
+      width: 48px;
+      height: 48px;
+    }
   }
 </style>
