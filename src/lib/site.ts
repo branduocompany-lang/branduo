@@ -6,7 +6,7 @@ export const SITE = {
   locale: 'ko_KR',
   phone: '+82-507-1308-3454',
   email: 'brand_duo@naver.com',
-  address: '경기 남양주시 순화궁로 249 M동 1415호',
+  address: '경기 남양주시 순화궁로 249 C동 232호',
   ogImage: '/og.png',
 } as const;
 
