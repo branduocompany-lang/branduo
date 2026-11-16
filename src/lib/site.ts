@@ -1,13 +1,15 @@
 export const SITE = {
   name: '브랜듀오',
-  title: '브랜듀오 | 병원 마케팅·브랜딩, 대표가 직접 상담합니다',
+  title: '브랜듀오 | 병원 마케팅·브랜딩 전문',
   description:
     '광고만 해주는 마케팅이 아닌, 브랜드를 이해하고 성과를 만드는 병원 마케팅. 네이버 콘텐츠·플레이스·AI 최적화·의료광고 심의대행까지 대표가 직접 상담합니다.',
+  // 카카오톡·SNS 공유 카드에 쓰는 짧은 설명 (두 줄 안에 끝나도록)
+  ogDescription: '브랜드를 이해하고 성과를 만드는 병원 마케팅. 대표가 직접 상담합니다.',
   locale: 'ko_KR',
   phone: '+82-507-1308-3454',
   email: 'brand_duo@naver.com',
   address: '경기 남양주시 순화궁로 249 C동 232호',
-  ogImage: '/og.png',
+  ogImage: '/og-v2.png',
 } as const;
 
 export const NAV = [
