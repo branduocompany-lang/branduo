@@ -9,7 +9,7 @@ export const SITE = {
   phone: '+82-507-1308-3454',
   email: 'brand_duo@naver.com',
   address: '경기 남양주시 순화궁로 249 C동 232호',
-  ogImage: '/og-v2.png',
+  ogImage: '/og-v3.png',
 } as const;
 
 export const NAV = [
